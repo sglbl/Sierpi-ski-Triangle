@@ -7,32 +7,35 @@ public class Test extends JFrame{
     private static final long serialVersionUID = 1L;
     private JPanel mainPanel = new JPanel();
 
-    private GridLayout gridLayout = new GridLayout(3, 2); 
+    private GridLayout gridLayout = new GridLayout(5, 2); 
     private int widthSize  = 800; 
     private int heightSize = 600; 
+    private int length = 120;
+    private int recursiveNumber = 5;
     private boolean sequentialMode = true; // true for sequential and false for parallel
-    private JButton setSizeButton = new JButton("Set width and height");
+    private JButton setSizeButton = new JButton("Set width, height, len & num");
     private JTextField widthText = new JTextField("800",10);
     private JTextField heightText = new JTextField("600",10);
+    private JTextField lengthText = new JTextField("120",10);
+    private JTextField recursiveNumberText = new JTextField("5",10);
     private JRadioButton sequentialRadioButton = new JRadioButton("Sequential", true);
     private JRadioButton parallelRadioButton = new JRadioButton("Parallel", true);
     private ButtonGroup radioGroup = new ButtonGroup();
     private JButton showBoardButton = new JButton("Show the board");
     private JTextField text1 = new JTextField("Choose sequential or parallel: ");
     private JTextField text2 = new JTextField("Enter width of board");
-    private JTextField text3 = new JTextField("Enter height of board");
+    private JTextField text3 = new JTextField("Enter height of board(left below)");
+    private JTextField text4 = new JTextField("Enter initial length of line");
+    private JTextField text5 = new JTextField("Enter number of recursive calls");
 
 
     public static void main(String args[]){
         Test app = new Test();
-
         app.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        app.setSize( 800, 600 ); // set frame size
+        app.setSize( 880, 600 ); // set frame size
         app.setLocationRelativeTo(null);
         app.setBackground(Color.GREEN);
         app.setVisible( true );
-        // board.setResizable(false); // Making not resizable
-
     }   //End of main
 
     public Test(){
@@ -49,13 +52,23 @@ public class Test extends JFrame{
                         message = "Error! Please enter size something bigger than 1\n";
                         widthSize = 0; // Making boardSize something not in range.
                     }
-                    JOptionPane.showMessageDialog(null, message);
 
                     heightSize = Integer.parseInt(heightText.getText());
                     if (heightSize <= 1) {
                         message = "Error! Please enter board size something bigger than 1\n";
                         heightSize = 0; // Making boardSize something not in range.
                     }
+                    length = Integer.parseInt(lengthText.getText());
+                    if(length < 1 || length > 500){
+                        message = "Error! Please enter length properly between 1-500\n";
+                        widthSize = 0;
+                    }
+                    recursiveNumber = Integer.parseInt(recursiveNumberText.getText());
+                    if(recursiveNumber < 0 || recursiveNumber > 20){
+                        message = "Error! Please enter recursive number properly between 0-20\n";
+                        widthSize = 0;
+                    }
+                    JOptionPane.showMessageDialog(null, message);
                 }
                 catch(NumberFormatException n){
                     message = "Error! Please enter size something bigger than 1\n";
@@ -69,6 +82,8 @@ public class Test extends JFrame{
         text1.setEditable( false );     //Question texts are non editable text.
         text2.setEditable( false );
         text3.setEditable( false );
+        text4.setEditable( false );
+        text5.setEditable( false );
         
         mainPanel.add(text1);
         mainPanel.add(sequentialRadioButton);   
@@ -95,12 +110,18 @@ public class Test extends JFrame{
 
         mainPanel.add(text2);
         mainPanel.add(widthText);
-        mainPanel.add(setSizeButton);
+        
         mainPanel.add(text3);
         mainPanel.add(heightText);
+        
+        mainPanel.add(text4);
+        mainPanel.add(lengthText);
+        mainPanel.add(text5);
+        mainPanel.add(recursiveNumberText);
+        
+        mainPanel.add(setSizeButton);
         mainPanel.add(showBoardButton);
 
-        
         showBoardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent act) {
@@ -108,13 +129,14 @@ public class Test extends JFrame{
                     JOptionPane.showMessageDialog(null, "Error! Please enter board size something bigger than 1\n");
                     return;
                 }
-                //addBoardToGame();
-                BoardCreator board = new BoardCreator();
+                
+                BoardCreator board = new BoardCreator(sequentialMode, length, recursiveNumber);
 
                 board.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
                 board.setSize( widthSize, heightSize ); // set frame size
                 board.setLocationRelativeTo(null);
-                board.setBackground(Color.GREEN);
+                board.setBackground(new Color(251, 195, 134));
+                dispose(); //Closing main window and opening board window
                 board.setVisible( true );
                 
             }
