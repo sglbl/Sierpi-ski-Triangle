@@ -23,13 +23,10 @@ class PanelDrawer extends JPanel{
     public void paintComponent(Graphics graphic){
         //Creating first point locations for a equilateral triangle 
         int length = 120;
-        Point p1 = new Point(55 - length/2, (int)round(55 + length*sqrt(3.0)/2));
-        Point p2 = new Point(55 + length/2, (int)round(55 + length*sqrt(3.0)/2));
-        Point p3 = new Point(55, 55);
+        Point p1 = new Point(70 - length/2, (int)round(70 + length*sqrt(3.0)/2));
+        Point p2 = new Point(70 + length/2, (int)round(70 + length*sqrt(3.0)/2));
+        Point p3 = new Point(70, 70);
 
-        // Point p1 = new Point(10,  100);
-        // Point p2 = new Point(100, 100);
-        // Point p3 = new Point(55, 100 + (int) (45*sqrt(3.0)) );
         //Creating graphic
         Graphics2D g2d = (Graphics2D) graphic.create();
 
@@ -42,12 +39,12 @@ class PanelDrawer extends JPanel{
         for(int i=0; i<numberOfTimes; i++){
             //Firstly painting all triangles to black.
             blackFiller(p1Temp, p2Temp, p3Temp, g2d);                
-            p1Temp.setX( p1Temp.getX() + 130 );
-            p2Temp.setX( p2Temp.getX() + 130 );
-            p3Temp.setX( p3Temp.getX() + 130 );
+            p1Temp.setX( p1Temp.getX() + length+10 );
+            p2Temp.setX( p2Temp.getX() + length+10 );
+            p3Temp.setX( p3Temp.getX() + length+10 );
         }
         //Drawing white triangle
-        WhiteTriangle whiteTriangle = new WhiteTriangle(p1, p2, p3, g2d, numberOfTimes);
+        WhiteTriangle whiteTriangle = new WhiteTriangle(p1, p2, p3, g2d, numberOfTimes, length);
         g2d.draw( whiteTriangle );
 
     }
