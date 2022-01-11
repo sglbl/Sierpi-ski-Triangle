@@ -1,6 +1,13 @@
 ubuntu:		#Make for Ubuntu / Wsl
-	javac -d classfiles *.java
-	java -cp classfiles Test
+	javac -d bin *.java
+	java -cp bin Test
+
 doc:		#Make for creating Javadoc
-	javadoc -d javadocfiles *.java
+	javadoc -d doc **/*.java
+
+rm:		#Make for cleaning binary class files.
+	rm -r ./bin
+
+rmdoc:	#Make for cleaning javadoc files.
+	rm -r ./doc
 #Suleyman Golbol 

@@ -1,12 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.awt.geom.Path2D;
 import static java.lang.Math.*;
 
 public class BoardCreator extends JFrame{
     private static final long serialVersionUID = 1L;
     
-
     // CONSTRUCTOR
     public BoardCreator(boolean isSequential, int length, int recursiveNumber) {
         super("Sierpinski Triangle Project by Suleyman Golbol!!"); // Title.
@@ -23,6 +23,15 @@ public class BoardCreator extends JFrame{
         scrollPane.setViewportView(boardPanel);
         
     }
+    
+    public static void main(String args[]){
+        Test app = new Test();
+        app.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        app.setSize( 880, 600 ); // set frame size
+        app.setLocationRelativeTo(null);
+        app.setBackground(Color.GREEN);
+        app.setVisible( true );
+    } 
 
 }   //End of BoardCreator class.
 
@@ -77,18 +86,19 @@ class PanelDrawer extends JPanel{
     public void paintComponent(Graphics graphic){
         super.paintComponent(graphic);
         //Creating first point locations for a equilateral triangle 
-        Point p1 = new Point(70 - length/2, (int)round(70 + length*sqrt(3.0)/2));
-        Point p2 = new Point(70 + length/2, (int)round(70 + length*sqrt(3.0)/2));
-        Point p3 = new Point(70, 70);
+        Point p1 = new Point(70.0 - length/2.0, 70.0 + length*sqrt(3.0)/2.0);
+        Point p2 = new Point(70.0 + length/2.0, 70.0 + length*sqrt(3.0)/2.0);
+        Point p3 = new Point(70.0, 70.0);
 
         //Creating graphic
         Graphics2D g2d = (Graphics2D) graphic.create();
 
+        //Scaling screen.
         g2d.translate(width/2, height/2);
         g2d.scale(scale, scale);
         g2d.translate(-width/2, -height/2);        
 
-        if(fitViewPort == true && width < (p2.getX() + length*(numberOfTimes-1)+10) ){
+        if(fitViewPort == true && width < (p2.getX() + length*(numberOfTimes-1)+10.0) ){
             scale = frame.getWidth() / ((p2.getX() + (length+20)*(numberOfTimes-1))*1.0); //fitting to the screen | ÇÇ reporta ekle.
             fitViewPort = false;
             g2d.translate(width/2, height/2);
@@ -107,6 +117,8 @@ class PanelDrawer extends JPanel{
             p1Temp.setX( p1Temp.getX() + length+10 );
             p2Temp.setX( p2Temp.getX() + length+10 );
             p3Temp.setX( p3Temp.getX() + length+10 );
+            // System.out.println("xx- " + p1Temp.getX() + length+10); çç
+            // System.out.println("yy- " + p1Temp.getX() + length+10.0);
         }
         
         //Drawing white triangle
@@ -115,12 +127,23 @@ class PanelDrawer extends JPanel{
         
     }
     
+    //This is for firstly painting all triangles to black.
     public void blackFiller(Point p1, Point p2, Point p3, Graphics2D g2d){
-        int[] arrayX = { p1.getX(), p2.getX(), p3.getX() };
-        int[] arrayY = { p1.getY(), p2.getY(), p3.getY() };
-        Polygon p = new Polygon(arrayX, arrayY, 3 /* 3 is because of triangle has 3 vertices */);
+        double[] arrayX = { p1.getX(), p2.getX(), p3.getX() };
+        double[] arrayY = { p1.getY(), p2.getY(), p3.getY() };
+
+        //Drawing triangle based on arrays.
+        Path2D path = new Path2D.Double();
+        path.moveTo(arrayX[0], arrayY[0]);
+        for(int j = 1; j<arrayX.length; ++j)
+            path.lineTo(arrayX[j], arrayY[j]);
+        path.closePath();
+
+        // Draw the triangle with black lines and fill inside white.
         g2d.setColor(Color.BLACK);
-        g2d.fillPolygon(p);
+        g2d.draw(path);
+        g2d.setColor(Color.BLACK);
+        g2d.fill(path);
     }
 
 }
