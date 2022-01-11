@@ -4,7 +4,7 @@ import java.awt.geom.*; //For Path2D class.
 public class Triangle extends Path2D.Double{
 
     private static final long serialVersionUID = 1L;
-    SGArrayList<Point> array = new SGArrayList<Point>();
+    SGArrayList<Point> arrayList = new SGArrayList<Point>();
 
     public Triangle(Point p1, Point p2, Point p3, Graphics2D g2d, int numberOfTimes, int length) {
         //Creating temporary points to paint it black.
@@ -22,8 +22,7 @@ public class Triangle extends Path2D.Double{
         }
 
         //All points added to data sturcture so Painting to white every triangle point that is get recursively by recursivePointAdder
-        for(int i=0; i<numberOfTimes; i++)
-            drawLine(array, g2d, numberOfTimes);
+        drawLine(arrayList, g2d, numberOfTimes);
         
     }
 
@@ -44,16 +43,16 @@ public class Triangle extends Path2D.Double{
         
         p3Temp.setX( (p1.getX() + p3.getX())/2.0 );
         p3Temp.setY( (p1.getY() + p3.getY())/2.0 );
-        //System.out.println( (p1.getY() + p3.getY())/2.0 );
+        System.out.println("double -> " +  (p1.getY() + p3.getY())/2.0 );
         
-        array.add(p1Temp, p2Temp, p3Temp);
+        arrayList.add(p1Temp, p2Temp, p3Temp);
         //Painting inside of triangles recursively
         recursivePointAdder(p3Temp, p2Temp, p3, g2d, recursiveCount-1);
-        array.add(p1Temp, p2Temp, p3Temp);
+        arrayList.add(p1Temp, p2Temp, p3Temp);
         recursivePointAdder(p1Temp, p2, p2Temp, g2d, recursiveCount-1);
-        array.add(p1Temp, p2Temp, p3Temp);
+        arrayList.add(p1Temp, p2Temp, p3Temp);
         recursivePointAdder(p1, p1Temp, p3Temp, g2d, recursiveCount-1);
-        array.add(p1Temp, p2Temp, p3Temp);
+        arrayList.add(p1Temp, p2Temp, p3Temp);
         
         // Switching to next big triangle recursively
         recursivePointAdder(p1, p2, p3, g2d, recursiveCount-1);
@@ -77,6 +76,7 @@ public class Triangle extends Path2D.Double{
             path.closePath();
 
             // Draw the triangle with black lines and fill inside white.
+            g2d.setStroke(new BasicStroke(0.1f)); //setting the stroke to 0.1 so it's not gonna be so thick.
             g2d.setColor(Color.BLACK);
             g2d.draw(path);
             g2d.setColor(Color.WHITE);

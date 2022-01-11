@@ -2,6 +2,7 @@ public class Point {
     private double x,y;
 
     public Point(){
+        //if this constructor will be called, set x and y to 0.
         x=0; y=0;
     }
 

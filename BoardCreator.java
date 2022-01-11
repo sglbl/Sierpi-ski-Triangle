@@ -38,8 +38,8 @@ class PanelDrawer extends JPanel{
     private JButton zoomOutButton = new JButton("Zoom Out");
 
     private double scale = 1.0;
-    int width = this.getWidth();
-    int height = this.getHeight();
+    double width = (double)this.getWidth();
+    double height = (double)this.getHeight();
 
 
     public PanelDrawer(boolean isSequential, int length, int numberOfTimes, JFrame frame) {
@@ -85,16 +85,16 @@ class PanelDrawer extends JPanel{
         Graphics2D g2d = (Graphics2D) graphic.create();
 
         //Scaling screen.
-        g2d.translate(width/2, height/2);
+        g2d.translate(width/2.0, height/2.0);
         g2d.scale(scale, scale);
-        g2d.translate(-width/2, -height/2);        
+        g2d.translate(-width/2.0, -height/2.0);        
 
         if(fitViewPort == true && width < (p2.getX() + length*(numberOfTimes-1)+10.0) ){
             scale = frame.getWidth() / ((p2.getX() + (length+20)*(numberOfTimes-1))*1.0); //fitting to the screen | ÇÇ reporta ekle.
             fitViewPort = false;
-            g2d.translate(width/2, height/2);
+            g2d.translate(width/2.0, height/2.0);
             g2d.scale(scale, scale);
-            g2d.translate(-width/2, -height/2); 
+            g2d.translate(-width/2.0, -height/2.0); 
         }
 
         //Creating temporary points to paint it black.
@@ -108,8 +108,6 @@ class PanelDrawer extends JPanel{
             p1Temp.setX( p1Temp.getX() + length+10 );
             p2Temp.setX( p2Temp.getX() + length+10 );
             p3Temp.setX( p3Temp.getX() + length+10 );
-            // System.out.println("xx- " + p1Temp.getX() + length+10); çç
-            // System.out.println("yy- " + p1Temp.getX() + length+10.0);
         }
         
         //Drawing white triangle
@@ -131,6 +129,7 @@ class PanelDrawer extends JPanel{
         path.closePath();
 
         // Draw the triangle with black lines and fill inside white.
+        g2d.setStroke(new BasicStroke(0.1f));
         g2d.setColor(Color.BLACK);
         g2d.draw(path);
         g2d.setColor(Color.BLACK);
