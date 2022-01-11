@@ -24,15 +24,6 @@ public class BoardCreator extends JFrame{
         
     }
     
-    public static void main(String args[]){
-        Test app = new Test();
-        app.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        app.setSize( 880, 600 ); // set frame size
-        app.setLocationRelativeTo(null);
-        app.setBackground(Color.GREEN);
-        app.setVisible( true );
-    } 
-
 }   //End of BoardCreator class.
 
 class PanelDrawer extends JPanel{
@@ -86,8 +77,8 @@ class PanelDrawer extends JPanel{
     public void paintComponent(Graphics graphic){
         super.paintComponent(graphic);
         //Creating first point locations for a equilateral triangle 
-        Point p1 = new Point(70.0 - length/2.0, 70.0 + length*sqrt(3.0)/2.0);
-        Point p2 = new Point(70.0 + length/2.0, 70.0 + length*sqrt(3.0)/2.0);
+        Point p1 = new Point(70.0 - length/2.0, 70.0 + length*sin(PI/3));
+        Point p2 = new Point(70.0 + length/2.0, 70.0 + length*sin(PI/3));
         Point p3 = new Point(70.0, 70.0);
 
         //Creating graphic
