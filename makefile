@@ -1,6 +1,6 @@
 ubuntu:		#Make for Ubuntu / Wsl
-	javac -d bin *.java
-	java -cp bin Test
+	javac -d bin *.java 
+	java -Xmx2048m -cp bin Test
 
 doc:		#Make for creating Javadoc
 	javadoc -d doc **/*.java

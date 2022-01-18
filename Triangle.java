@@ -6,7 +6,7 @@ public class Triangle extends Path2D.Double{
     private static final long serialVersionUID = 1L;
     SGArrayList<Point> arrayList = new SGArrayList<Point>();
 
-    public Triangle(Point p1, Point p2, Point p3, Graphics2D g2d, int numberOfTimes, int length) {
+    public Triangle(Point p1, Point p2, Point p3, Graphics2D g2d, int numberOfTimes, int length, boolean isSequential) {
         //Creating temporary points to paint it black.
         Point p1Temp = new Point(p1.getX(), p1.getY());
         Point p2Temp = new Point(p2.getX(), p2.getY());
@@ -22,7 +22,7 @@ public class Triangle extends Path2D.Double{
         }
 
         //All points added to data sturcture so Painting to white every triangle point that is get recursively by recursivePointAdder
-        drawLine(arrayList, g2d, numberOfTimes);
+        drawLine(arrayList, g2d, numberOfTimes, isSequential);
         
     }
 
@@ -43,7 +43,6 @@ public class Triangle extends Path2D.Double{
         
         p3Temp.setX( (p1.getX() + p3.getX())/2.0 );
         p3Temp.setY( (p1.getY() + p3.getY())/2.0 );
-        System.out.println("double -> " +  (p1.getY() + p3.getY())/2.0 );
         
         arrayList.add(p1Temp, p2Temp, p3Temp);
         //Painting inside of triangles recursively
@@ -59,28 +58,35 @@ public class Triangle extends Path2D.Double{
     }
 
     //Draw line and fill inside white colors getting the data from a data structure which is a ArrayList.
-    public void drawLine(SGArrayList<Point> arrayList, Graphics2D g2d, int numberOfTimes){
-        for(int i=0; i<arrayList.size(); i++){
-            Point p1 = arrayList.get(i)[0];
-            Point p2 = arrayList.get(i)[1];
-            Point p3 = arrayList.get(i)[2];
+    public void drawLine(SGArrayList<Point> arrayList, Graphics2D g2d, int numberOfTimes, boolean isSequential){
+        if(isSequential == true)  //sequential drawLine.
+        {
+            for(int i=0; i<arrayList.size(); i++){
+                Point p1 = arrayList.get(i)[0];
+                Point p2 = arrayList.get(i)[1];
+                Point p3 = arrayList.get(i)[2];
 
-            double[] arrayX = { p1.getX(), p2.getX(), p3.getX() };
-            double[] arrayY = { p1.getY(), p2.getY(), p3.getY() };
+                double[] arrayX = { p1.getX(), p2.getX(), p3.getX() };
+                double[] arrayY = { p1.getY(), p2.getY(), p3.getY() };
+                
+                //Drawing triangle based on arrays.
+                Path2D path = new Path2D.Double();
+                path.moveTo(arrayX[0], arrayY[0]);
+                for(int j = 1; j<arrayX.length; ++j)
+                    path.lineTo(arrayX[j], arrayY[j]);
+                path.closePath();
+
+                // Draw the triangle with black lines and fill inside white.
+                g2d.setStroke(new BasicStroke(0.0f)); //setting the stroke size to 0.0 so it's not gonna be so thick.
+                g2d.setColor(Color.BLACK);
+                g2d.draw(path);
+                g2d.setColor(Color.WHITE);
+                g2d.fill(path);
+            }
+        }
+        else //if it's parallel.
+        {
             
-            //Drawing triangle based on arrays.
-            Path2D path = new Path2D.Double();
-            path.moveTo(arrayX[0], arrayY[0]);
-            for(int j = 1; j<arrayX.length; ++j)
-                path.lineTo(arrayX[j], arrayY[j]);
-            path.closePath();
-
-            // Draw the triangle with black lines and fill inside white.
-            g2d.setStroke(new BasicStroke(0.1f)); //setting the stroke to 0.1 so it's not gonna be so thick.
-            g2d.setColor(Color.BLACK);
-            g2d.draw(path);
-            g2d.setColor(Color.WHITE);
-            g2d.fill(path);
         }
     }
 

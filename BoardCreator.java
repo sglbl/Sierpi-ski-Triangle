@@ -71,7 +71,7 @@ class PanelDrawer extends JPanel{
     
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(8000, 6000);
+        return new Dimension(5000, 3000);
     }
 
     public void paintComponent(Graphics graphic){
@@ -111,7 +111,7 @@ class PanelDrawer extends JPanel{
         }
         
         //Drawing white triangle
-        Triangle whiteTriangle = new Triangle(p1, p2, p3, g2d, numberOfTimes, length);
+        Triangle whiteTriangle = new Triangle(p1, p2, p3, g2d, numberOfTimes, length, isSequential);
         g2d.draw( whiteTriangle );
         
     }
@@ -129,7 +129,7 @@ class PanelDrawer extends JPanel{
         path.closePath();
 
         // Draw the triangle with black lines and fill inside white.
-        g2d.setStroke(new BasicStroke(0.1f));
+        g2d.setStroke(new BasicStroke(0.0f));
         g2d.setColor(Color.BLACK);
         g2d.draw(path);
         g2d.setColor(Color.BLACK);

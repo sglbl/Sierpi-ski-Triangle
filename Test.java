@@ -7,7 +7,7 @@ public class Test extends JFrame{
     private static final long serialVersionUID = 1L;
     private JPanel mainPanel = new JPanel();
 
-    private GridLayout gridLayout = new GridLayout(5, 2); 
+    private GridLayout gridLayout = new GridLayout(0, 1); 
     private int widthSize  = 800; 
     private int heightSize = 600; 
     private int length = 120;
@@ -28,7 +28,6 @@ public class Test extends JFrame{
     private JTextField text4 = new JTextField("Enter initial length of line");
     private JTextField text5 = new JTextField("Enter number of recursive calls");
 
-
     public static void main(String args[]){
         Test app = new Test();
         app.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -46,7 +45,8 @@ public class Test extends JFrame{
             public void actionPerformed(ActionEvent event) {
                 String message = "";
                 try{
-                    message = String.format("Entered size is %s x %s", widthText.getText(), heightText.getText());
+                    message = String.format("Entered size is %s x %s \nInitial length: %s \nRecursive calls: %s", 
+                                            widthText.getText(), heightText.getText(), lengthText.getText(), recursiveNumberText.getText() );
                     widthSize = Integer.parseInt(widthText.getText());
                     if (widthSize <= 1) {
                         message = "Error! Please enter size something bigger than 1\n";
@@ -105,8 +105,15 @@ public class Test extends JFrame{
             }  
         });
 
-        mainPanel.add(sequentialRadioButton);
-        mainPanel.add(parallelRadioButton); // Adding buttons to panel.
+        //Just to display 2 radio buttons in the same row; creating a temporary panel and a box layout on x axis.
+        JPanel radiobuttonpanel = new JPanel();
+        BoxLayout radiobuttonpanellayout = new BoxLayout(radiobuttonpanel, BoxLayout.X_AXIS);
+        radiobuttonpanel.setLayout(radiobuttonpanellayout);
+        radiobuttonpanel.add(sequentialRadioButton); radiobuttonpanel.add(parallelRadioButton);
+        mainPanel.add(radiobuttonpanel);
+
+        // mainPanel.add(sequentialRadioButton);
+        // mainPanel.add(parallelRadioButton); // Adding buttons to panel.
 
         mainPanel.add(text2);
         mainPanel.add(widthText);
