@@ -137,7 +137,7 @@ public class Test extends JFrame{
                     return;
                 }
                 
-                BoardCreator board = new BoardCreator(sequentialMode, length, recursiveNumber);
+                Board board = new Board(sequentialMode, length, recursiveNumber);
 
                 board.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
                 board.setSize( widthSize, heightSize ); // set frame size

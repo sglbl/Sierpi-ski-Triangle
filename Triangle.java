@@ -57,37 +57,124 @@ public class Triangle extends Path2D.Double{
         recursivePointAdder(p1, p2, p3, g2d, recursiveCount-1);
     }
 
+    public double[] arrayCreator(double p1, double p2, double p3){
+        double[] array;
+        array = new double[3];
+        array[0] = p1;
+        array[1] = p2;
+        array[2] = p3;
+        return array;
+    }
+
     //Draw line and fill inside white colors getting the data from a data structure which is a ArrayList.
     public void drawLine(SGArrayList<Point> arrayList, Graphics2D g2d, int numberOfTimes, boolean isSequential){
         if(isSequential == true)  //sequential drawLine.
         {
-            for(int i=0; i<arrayList.size(); i++){
-                Point p1 = arrayList.get(i)[0];
-                Point p2 = arrayList.get(i)[1];
-                Point p3 = arrayList.get(i)[2];
+            long stime1 = System.currentTimeMillis();
+            for(int k=0; k<20-numberOfTimes; k++)
+                for(int i=0; i<arrayList.size(); i++){
+                    Point p1 = arrayList.get(i)[0];
+                    Point p2 = arrayList.get(i)[1];
+                    Point p3 = arrayList.get(i)[2];
 
-                double[] arrayX = { p1.getX(), p2.getX(), p3.getX() };
-                double[] arrayY = { p1.getY(), p2.getY(), p3.getY() };
-                
-                //Drawing triangle based on arrays.
-                Path2D path = new Path2D.Double();
-                path.moveTo(arrayX[0], arrayY[0]);
-                for(int j = 1; j<arrayX.length; ++j)
-                    path.lineTo(arrayX[j], arrayY[j]);
-                path.closePath();
+                    double[] arrayX = arrayCreator( p1.getX(), p2.getX(), p3.getX() );
+                    double[] arrayY = arrayCreator( p1.getY(), p2.getY(), p3.getY() );
+                    
+                    //Drawing triangle based on arrays.
+                    Path2D path = new Path2D.Double();
+                    path.moveTo(arrayX[0], arrayY[0]);
+                    for(int j = 1; j<arrayX.length; ++j)
+                        path.lineTo(arrayX[j], arrayY[j]);
+                    path.closePath();
 
-                // Draw the triangle with black lines and fill inside white.
-                g2d.setStroke(new BasicStroke(0.0f)); //setting the stroke size to 0.0 so it's not gonna be so thick.
-                g2d.setColor(Color.BLACK);
-                g2d.draw(path);
-                g2d.setColor(Color.WHITE);
-                g2d.fill(path);
-            }
+                    // Draw the triangle with black lines and fill inside white.
+                    g2d.setStroke(new BasicStroke(0.0f)); //setting the stroke size to 0.0 so it's not gonna be so thick.
+                    g2d.setColor(Color.BLACK);
+                    g2d.draw(path);
+                    g2d.setColor(Color.WHITE);
+                    g2d.fill(path);
+                }
+            
+            long etime1 = System.currentTimeMillis();
+            System.out.println("Sequential Time: " + (etime1-stime1) ); 
         }
         else //if it's parallel.
         {
-            
+            long stime2 = System.currentTimeMillis();
+            parallelDrawLine(arrayList, 1000, g2d);
+            System.out.println(arrayList.size() + "ss");
+            long etime2 = System.currentTimeMillis();
+            System.out.println("Parallel Time: " + (etime2-stime2) ); 
         }
     }
 
+    public void parallelDrawLine(SGArrayList<Point> arrayList, int nThreads, Graphics2D g2d){
+        int chunk = (int) Math.ceil(1.0 * arrayList.size() / nThreads); 
+
+        DrawRunnable[] tasks = new DrawRunnable[nThreads];
+        Thread[] threads = new Thread[nThreads];
+
+        for(int i=0; i<nThreads; i++){
+            //Set max size as arrayList size or if it's smaller next i*chunk.
+            int maxForPuttingToRunnable = Math.min((i+1)*chunk, arrayList.size() );
+            tasks[i] = new DrawRunnable(arrayList, i*chunk,  maxForPuttingToRunnable);
+            threads[i] = new Thread( tasks[i] );
+            threads[i].start();
+        }
+
+        //Joining threads
+        try{
+            for(int i=0; i<nThreads; i++)
+                threads[i].join();
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
+        
+        for(int i=0; i<nThreads; i++){
+            // Draw the triangle with black lines and fill inside white.
+            g2d.setStroke(new BasicStroke(0.0f)); //setting the stroke size to 0.0 so it's not gonna be so thick.
+            g2d.setColor(Color.BLACK);
+            g2d.draw( tasks[i].getPath() );
+            g2d.setColor(Color.WHITE);
+            g2d.fill( tasks[i].getPath() );
+        }
+
+    }
+
+}
+
+class DrawRunnable implements Runnable{
+    SGArrayList<Point> arrayList;
+    int min, max; 
+    Path2D path = new Path2D.Double();
+    
+    public DrawRunnable(SGArrayList<Point> arrayList, int min, int max){
+        this.arrayList = arrayList;
+        this.min = min;
+        this.max = max;
+    }
+
+    public Path2D getPath(){
+        return path;
+    }
+
+    @Override
+    public void run(){
+        
+        for(int i=min; i<max; i++){ //min and max comes from task interval.
+            Point p1 = arrayList.get(i)[0];
+            Point p2 = arrayList.get(i)[1];
+            Point p3 = arrayList.get(i)[2];
+
+            double[] arrayX = { p1.getX(), p2.getX(), p3.getX() };
+            double[] arrayY = { p1.getY(), p2.getY(), p3.getY() };
+                
+            path.moveTo(arrayX[0], arrayY[0]);
+            path.lineTo(arrayX[1], arrayY[1]);
+            path.lineTo(arrayX[2], arrayY[2]);
+            path.closePath();    
+
+        }
+    }
+    
 }
