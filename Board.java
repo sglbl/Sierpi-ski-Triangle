@@ -89,12 +89,12 @@ class PanelDrawer extends JPanel{
         g2d.scale(scale, scale);
         g2d.translate(-width/2.0, -height/2.0);        
 
-        if(fitViewPort == true && width < (p2.getX() + length*(numberOfTimes-1)+10.0) ){
+        if(fitViewPort == true && width < (p2.getX() + length*(numberOfTimes-1)+10.0) ){ //if width smaller than total length of triangles
             scale = frame.getWidth() / ((p2.getX() + (length+20)*(numberOfTimes-1))*1.0); //fitting to the screen
             fitViewPort = false;
-            g2d.translate(width/2.0, height/2.0);
+            g2d.translate(width/2.0, height/2.0);       //move every point +width/2.0 and +height/2.0
             g2d.scale(scale, scale);
-            g2d.translate(-width/2.0, -height/2.0); 
+            g2d.translate(-width/2.0, -height/2.0);     //then backmove every point -width/2.0 and -height/2.0
         }
 
         //Creating temporary points to paint it black.
@@ -128,7 +128,7 @@ class PanelDrawer extends JPanel{
             path.lineTo(arrayX[j], arrayY[j]);
         path.closePath();
 
-        // Draw the triangle with black lines and fill inside white.
+        // Draw the triangle with black lines.
         g2d.setStroke(new BasicStroke(0.0f));
         g2d.setColor(Color.BLACK);
         g2d.draw(path);

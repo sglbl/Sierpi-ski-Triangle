@@ -141,7 +141,7 @@ public class Test extends JFrame{
 
                 board.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
                 board.setSize( widthSize, heightSize ); // set frame size
-                board.setLocationRelativeTo(null);
+                board.setLocationRelativeTo(null); //putting window location on the center.
                 board.setBackground(new Color(251, 195, 134));
                 dispose(); //Closing main window and opening board window
                 board.setVisible( true );

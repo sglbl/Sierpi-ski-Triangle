@@ -102,7 +102,7 @@ public class Triangle extends Path2D.Double{
         {
             long stime2 = System.currentTimeMillis();
             parallelDrawLine(arrayList, 1000, g2d);
-            System.out.println(arrayList.size() + "ss");
+            //System.out.println(arrayList.size() + "ss");
             long etime2 = System.currentTimeMillis();
             System.out.println("Parallel Time: " + (etime2-stime2) ); 
         }
@@ -117,15 +117,15 @@ public class Triangle extends Path2D.Double{
         for(int i=0; i<nThreads; i++){
             //Set max size as arrayList size or if it's smaller next i*chunk.
             int maxForPuttingToRunnable = Math.min((i+1)*chunk, arrayList.size() );
-            tasks[i] = new DrawRunnable(arrayList, i*chunk,  maxForPuttingToRunnable);
+            tasks[i] = new DrawRunnable(arrayList, i*chunk,  maxForPuttingToRunnable); //most probably will be between i*chunk and (i+1)*chunk
             threads[i] = new Thread( tasks[i] );
-            threads[i].start();
+            threads[i].start(); //after I start, run method calls.
         }
 
         //Joining threads
         try{
             for(int i=0; i<nThreads; i++)
-                threads[i].join();
+                threads[i].join();  //Using this join() method to ensure that a thread has been terminated. 
         }catch(InterruptedException e){
             e.printStackTrace();
         }
