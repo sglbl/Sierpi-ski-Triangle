@@ -251,11 +251,6 @@ the DrawRunnable class, I also created a local variable path
 that will keep every path. So, at the end to draw; I filled
 with getPath() argument. [ g2d.fill( tasks[i].getPath() ); ]
 
-and the MPI Server) out of three only need to implement
-the process function, while the remaining (Multithreaded
-Worker) had to implement the process queue function, as
-well. Their full descriptions follow.
-
 ## 4. TECHNICAL REMARKS
 
 
@@ -293,6 +288,7 @@ I believe that one graphic is not enough to understand ex-
 actly so I also created a line chart to see better with different
 point of views.
 <img src="images/table.png" alt="a" width="300"/>
+
 The table above shows the exact running time results on
 a table.
 As you can see in the beginning the sequential results were
