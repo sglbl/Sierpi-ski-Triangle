@@ -63,7 +63,8 @@ comes to the screen.
 To design the triangle structure as equilateral triangle first
 I needed to find a formula for this. So I used the formula
 below.
-<img src="images/equilateralTriangle.png" alt="a" width="600"/>
+
+<img src="images/equilateralTriangle.png" alt="a" width="400"/>
 
 Drawing of Sierpi ́nski triangle edge coordinates
 
