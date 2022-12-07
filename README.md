@@ -73,6 +73,7 @@ sqrt(3)/2 is also can be showed as
 ##### √3/2
 
 Now let’s draw a equilateral triangle and show it on triangle.
+
 <img src="images/sin60.png" alt="a" width="300"/>
 <img src="images/sin60_2.png" alt="a" width="400"/>
 
